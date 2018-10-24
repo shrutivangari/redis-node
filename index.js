@@ -1,13 +1,18 @@
-var utils=require("./redis-utils.js");
-var dataPrep=require("./data-prep.js");
-var voting=require("./incr-decr");
+var utils=require("./services/redis-utils.js");
+var dataPrep=require("./services/data-prep.js");
+var voting=require("./concepts/incr-decr");
+var logger = require("log4js").getLogger();
+
+logger.level='info';
 
 var client = utils.createClient();
 
 //1. Voting system to demonstrate incr-decr
 votingSystemIncrementDecrement();
 
-
+/**
+ * Run the voting system to demonstrate incr-decr
+ */
 function votingSystemIncrementDecrement() {
   dataPrep.votingSystemdata(client);
 
