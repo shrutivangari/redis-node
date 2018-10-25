@@ -1,14 +1,16 @@
 var utils=require("./services/redis-utils.js");
 var dataPrep=require("./services/data-prep.js");
 var voting=require("./concepts/incr-decr");
+var queue=require("./concepts/queue");
 var logger = require("log4js").getLogger();
 
 logger.level='info';
 
 var client = utils.createClient();
-
-//1. Voting system to demonstrate incr-decr
-votingSystemIncrementDecrement();
+//votingSystemIncrementDecrement();
+producerWorker();
+consumerWorker();
+client.quit();
 
 /**
  * Run the voting system to demonstrate incr-decr
@@ -27,5 +29,30 @@ function votingSystemIncrementDecrement() {
   voting.showResults(12345, client);
   voting.showResults(10001, client);
   voting.showResults(60056, client);
-  client.quit();
+}
+
+/**
+ * Producer Worker concept for a queue
+ */
+function producerWorker() {
+   var logsQueue = new queue.Queue("logs", client);
+   var MAX=5;
+   for(var i=0;i<MAX;i++) {
+        logsQueue.push("Hello World #"+i);
+   }
+   console.log("Created " + MAX + " logs");
+}
+
+function consumerWorker() {
+    var logsQueue = new queue.Queue("logs", client);
+    var MAX=5;
+    for(var i=0;i<MAX;i++) {
+        logsQueue.pop(function(err, replies) {
+                if(err) {
+                    console.log(err);
+                }
+                console.log("[consumer] Got log: "+ replies);
+        });
+    }
+
 }
