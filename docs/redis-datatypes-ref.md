@@ -19,3 +19,9 @@
 - Internally, Hash can be a ziplist or a hashtable
 - Ziplist = dually linked list designed to be memory efficient. In a ziplist, integers are stored as real integers rather than sequence of characters. Although a ziplist has memory optimizations, lookups are not performed in constant time.
 - Hashtable has constant-time lookup but is not memory-optimized
+
+## 4. Set
+- Unordered collection of distinct strings, cannot add repeated elements to a Set
+- Internally, Set is implemented as a hash table => some operations are optimized: member addition, removal and lookup = O(1)
+- Set memory footprint will be reduced if all the members are integers
+- Max no. of elements = 2^32 -1 => 4billion elements per set

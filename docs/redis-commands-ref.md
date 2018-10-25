@@ -48,3 +48,21 @@ Deletes a field from a hash
 Returns an array of all field/value pairs in a Hash
 * HEKYS/HVALS
 Retrieves all the keys and values
+* SADD
+Adds one or many members to a Set. Ignores members that already exist in a Set and returns number of added members
+* SINTER
+Returns an array with the members that belong to every set
+* SDIFF
+Returns an array with all members of the first Set that do not exist in the Sets that follow it
+* SUNION
+Returns an array with all members of all Sets. The result has no repeated members
+* SRANDMEMBER
+Returns random members from a Set. Sets are unordered, it cannot retrieve elements from a given position
+* SISMEMBER
+Checks whether a member exists in a Set. Returns 1 if yes, 0 if not
+* SREM
+Removes and returns members from a set
+* SCARD
+Returns the number of elements in a set (cardinality)
+* SMEMBERS
+Returns an array with all members of a set

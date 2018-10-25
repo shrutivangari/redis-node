@@ -3,6 +3,7 @@ var dataPrep=require("./services/data-prep.js");
 var voting=require("./concepts/incr-decr");
 var queue=require("./concepts/queue");
 var hash=require("./concepts/hash");
+var sets=require("./concepts/sets");
 var logger = require("log4js").getLogger();
 
 logger.level='info';
@@ -11,7 +12,8 @@ var client = utils.createClient();
 //votingSystemIncrementDecrement();
 //producerWorker();
 //consumerWorker();
-displayHash();
+//displayHash();
+setsAndDeals();
 client.quit();
 
 /**
@@ -68,4 +70,18 @@ function displayHash() {
 //    hash.downVote(456);
     hash.showDetails(123, client);
     hash.showDetails(456, client);
+}
+
+function setsAndDeals() {
+    sets.markDealAsSent('deal:1','user:1',client);
+    sets.markDealAsSent('deal:1','user:2',client);
+    sets.markDealAsSent('deal:2','user:1',client);
+    sets.markDealAsSent('deal:2','user:3',client);
+    sets.sendDealIfNotSent('deal:1', 'user:1',client);
+    sets.sendDealIfNotSent('deal:1', 'user:2',client);
+    sets.sendDealIfNotSent('deal:1', 'user:3',client);
+
+    sets.showUsersThatReceivedAllDeals(["deal:1", "deal:2"],client);
+    sets.showUsersThatReceivedAtLeastOneOfTheDeals(["deal:1", "deal:2"],client);
+
 }
