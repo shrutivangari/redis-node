@@ -25,3 +25,15 @@
 - Internally, Set is implemented as a hash table => some operations are optimized: member addition, removal and lookup = O(1)
 - Set memory footprint will be reduced if all the members are integers
 - Max no. of elements = 2^32 -1 => 4billion elements per set
+
+## 5. Sorted Set
+- Each element of a sorted set has an associated score
+- Is a collection of nonrepeating Strings sorted by a score
+- It is possible to have elements with repeated scores
+- Repeated elements are ordered lexicographically
+- Not as fast as Set operations because the scores need to be compared
+- Adding, removing, updating an item in a Sorted set = O(log(N))
+- Internally Sorted Sets are implemented as two separate data structures:
+-- A skip list with a hash table - this allows fast search within an ordered sequence of elements
+-- A ziplist
+- Elements are added to a sorted set with a score and a string value. There are two ordering criteria: the element score and the element value. If a tie exists between the element scores, the lexicographical order of the element values is used to break the tie.

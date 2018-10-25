@@ -18,6 +18,8 @@
     - Sets to use grouping all users who viewed similar products eg. recommendations on amazon.com
 8. Membership checking
     - Sets for checking whether a user is on a blacklist
+9. Real time waiting list for customer service/leaderboard of online game with top players/autocomplete system using millions of words
+    - Sorted sets
 
 ## Redis key concepts
 - Redis is single threaded

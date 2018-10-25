@@ -66,3 +66,19 @@ Removes and returns members from a set
 Returns the number of elements in a set (cardinality)
 * SMEMBERS
 Returns an array with all members of a set
+* ZADD
+Adds one or many members to a Sorted set, ignores members that already exist
+* ZRANGE
+Returns elements from the lowest to highest score, and it uses ascending lexicographical order if a score tie exists
+* ZREVRANGE
+Returns elements from the highest to the lowest score and it uses descending lexicographical order if a score tie exists
+* ZREVRANGE WITHSCORES
+Return elements with their scores
+* ZREM
+Removes a member from a Sorted Set
+* ZSCORE
+Returns score of a member
+* ZRANK
+Returns the member rank (or index) ordered from low to high. The member with the lowest score has rank 0
+* ZREVRANK
+REturns the member rank (or index) ordered from high to low. The member with the highest score has rank 0
