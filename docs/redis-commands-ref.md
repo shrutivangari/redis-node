@@ -32,3 +32,19 @@ Returns and removes the first element of a list
 Returns and removes the last element of a list
 * BRPOP
 Removes the last element of a Redis list. It is a blocking version or RPOP
+* HSET
+Sets a value to a field of a given key
+* HMSET
+Sets multiple field values to a key
+* HINCRBY/HINCRBYFLOAT
+Increments a field by a given integer/float
+* HGET
+Retrieves a field from a Hash
+* HMGET
+Retrieves multiple fields at once
+* HDEL
+Deletes a field from a hash
+* HGETALL
+Returns an array of all field/value pairs in a Hash
+* HEKYS/HVALS
+Retrieves all the keys and values

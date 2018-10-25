@@ -2,14 +2,16 @@ var utils=require("./services/redis-utils.js");
 var dataPrep=require("./services/data-prep.js");
 var voting=require("./concepts/incr-decr");
 var queue=require("./concepts/queue");
+var hash=require("./concepts/hash");
 var logger = require("log4js").getLogger();
 
 logger.level='info';
 
 var client = utils.createClient();
 //votingSystemIncrementDecrement();
-producerWorker();
-consumerWorker();
+//producerWorker();
+//consumerWorker();
+displayHash();
 client.quit();
 
 /**
@@ -55,4 +57,15 @@ function consumerWorker() {
         });
     }
 
+}
+
+function displayHash() {
+    hash.saveLink(123, "dayvson", "Maxxwell", "http://blah", client);
+//    hash.upVote(123);
+//    hash.upVote(123);
+    hash.saveLink(456, "test", "blah", "http://blah/blah", client);
+//    hash.upVote(123);
+//    hash.downVote(456);
+    hash.showDetails(123, client);
+    hash.showDetails(456, client);
 }
