@@ -4,6 +4,7 @@ var voting=require("./concepts/incr-decr");
 var queue=require("./concepts/queue");
 var hash=require("./concepts/hash");
 var sets=require("./concepts/sets");
+var sortedSets=require("./concepts/sortedsets");
 var logger = require("log4js").getLogger();
 
 logger.level='info';
@@ -13,7 +14,8 @@ var client = utils.createClient();
 //producerWorker();
 //consumerWorker();
 //displayHash();
-setsAndDeals();
+//setsAndDeals();
+leaderboard();
 client.quit();
 
 /**
@@ -84,4 +86,29 @@ function setsAndDeals() {
     sets.showUsersThatReceivedAllDeals(["deal:1", "deal:2"],client);
     sets.showUsersThatReceivedAtLeastOneOfTheDeals(["deal:1", "deal:2"],client);
 
+}
+
+function leaderboard() {
+    var leaderBoard = new sortedSets.LeaderBoard("game-score", client);
+    leaderBoard.addUser("Arthur", 70);
+    leaderBoard.addUser("KC", 20);
+    leaderBoard.addUser("Maxwell", 10);
+    leaderBoard.addUser("Patrik", 30);
+    leaderBoard.addUser("Ana", 60);
+    leaderBoard.addUser("Felipe", 40);
+    leaderBoard.addUser("Renata", 50);
+    leaderBoard.addUser("Hugo", 80);
+    leaderBoard.removeUser("Arthur");
+
+    leaderBoard.getUserScoreAndRank("Maxwell");
+
+    leaderBoard.showTopUsers(3);
+
+    leaderBoard.getUsersAroundUser("Felipe", 5, function(users) {
+      console.log("\nUsers around Felipe:");
+      users.forEach(function(user) {
+        console.log("#" + user.rank, "User:", user.username + ", score:", user.score);
+      });
+//      client.quit();
+    });
 }

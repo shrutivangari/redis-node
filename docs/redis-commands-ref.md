@@ -81,4 +81,4 @@ Returns score of a member
 * ZRANK
 Returns the member rank (or index) ordered from low to high. The member with the lowest score has rank 0
 * ZREVRANK
-REturns the member rank (or index) ordered from high to low. The member with the highest score has rank 0
+Returns the member rank (or index) ordered from high to low. The member with the highest score has rank 0
