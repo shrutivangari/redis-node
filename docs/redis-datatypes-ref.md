@@ -37,3 +37,13 @@
 -- A skip list with a hash table - this allows fast search within an ordered sequence of elements
 -- A ziplist
 - Elements are added to a sorted set with a score and a string value. There are two ordering criteria: the element score and the element value. If a tie exists between the element scores, the lexicographical order of the element values is used to break the tie.
+
+## 6. Bitmap/Bit Arrays/Bitsets
+- Not a real data type, is a String
+- Is a set of bit operations on a String
+- Is a sequence of bits where each bit can store 0 or 1
+- An array of ones and zeros
+- indices = offsets
+- Are memory efficient, support fast data lookups and can store up to 2^32 bits
+- Bitmap implementation uses far less memory than the Set implementation
+- Bitmaps are not always memory efficient

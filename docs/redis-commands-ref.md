@@ -82,3 +82,12 @@ Returns score of a member
 Returns the member rank (or index) ordered from low to high. The member with the lowest score has rank 0
 * ZREVRANK
 Returns the member rank (or index) ordered from high to low. The member with the highest score has rank 0
+* SETBIT
+Used to give a value to a Biptmap offset and it accepts only 1 or 0
+* GETBIT
+Returns the value of a Bitmap offset
+* BITCOUNT
+Returns the number of bits marked at 1 in a Bitmap
+* BITSTOP
+Requires a destination key, a bitwise operation and a list of keys to apply to that operation and store the result in the destination key. Available bitwise operations are OR, AND, XOR and NOT
+

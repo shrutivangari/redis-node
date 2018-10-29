@@ -4,8 +4,8 @@ var logger = require("log4js").getLogger();
 /**
  * Create a Redis client
  */
-function createClient() {
-  var client = redis.createClient();
+function createClient(options) {
+  var client = redis.createClient(options);
   setDataInRedis(client, "my_key", "Hello world using Node.js and Redis");
   getDataFromRedis(client, "my_key");
   return client;

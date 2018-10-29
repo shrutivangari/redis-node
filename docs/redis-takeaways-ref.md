@@ -20,6 +20,8 @@
     - Sets for checking whether a user is on a blacklist
 9. Real time waiting list for customer service/leaderboard of online game with top players/autocomplete system using millions of words
     - Sorted sets
+10. Applications that involve real-time analytics, because they can tell wheter a user performaned an action or how many times an event occurred
+    - Bitmaps
 
 ## Redis key concepts
 - Redis is single threaded

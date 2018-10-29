@@ -5,18 +5,24 @@ var queue=require("./concepts/queue");
 var hash=require("./concepts/hash");
 var sets=require("./concepts/sets");
 var sortedSets=require("./concepts/sortedsets");
+var bitmaps=require("./concepts/bitmap");
 var logger = require("log4js").getLogger();
 
 logger.level='info';
 
 var client = utils.createClient();
-//votingSystemIncrementDecrement();
-//producerWorker();
-//consumerWorker();
-//displayHash();
-//setsAndDeals();
+votingSystemIncrementDecrement();
+producerWorker();
+consumerWorker();
+displayHash();
+setsAndDeals();
 leaderboard();
 client.quit();
+
+
+//It is simpler to manipulate bytes with buffers than with JavaScript strings.
+var clientBuffers = utils.createClient({return_buffers: true});
+bitmaps.storeDailyVisit(clientBuffers);
 
 /**
  * Run the voting system to demonstrate incr-decr
