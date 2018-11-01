@@ -11,23 +11,24 @@ var logger = require("log4js").getLogger();
 logger.level='info';
 
 var client = utils.createClient();
-votingSystemIncrementDecrement();
-producerWorker();
-consumerWorker();
-displayHash();
-setsAndDeals();
-leaderboard();
+votingSystemIncrementDecrement(client);
+producerWorker(client);
+consumerWorker(client);
+displayHash(client);
+setsAndDeals(client);
+leaderboard(client);
 client.quit();
 
 
 //It is simpler to manipulate bytes with buffers than with JavaScript strings.
 var clientBuffers = utils.createClient({return_buffers: true});
-bitmaps.storeDailyVisit(clientBuffers);
+bitMapUserVisitCounts(clientBuffers);
+clientBuffers.quit();
 
 /**
  * Run the voting system to demonstrate incr-decr
  */
-function votingSystemIncrementDecrement() {
+function votingSystemIncrementDecrement(client) {
   dataPrep.votingSystemdata(client);
 
   voting.upVote(12345, client); // article:12345 has 1 vote
@@ -46,7 +47,7 @@ function votingSystemIncrementDecrement() {
 /**
  * Producer Worker concept for a queue
  */
-function producerWorker() {
+function producerWorker(client) {
    var logsQueue = new queue.Queue("logs", client);
    var MAX=5;
    for(var i=0;i<MAX;i++) {
@@ -55,7 +56,7 @@ function producerWorker() {
    console.log("Created " + MAX + " logs");
 }
 
-function consumerWorker() {
+function consumerWorker(client) {
     var logsQueue = new queue.Queue("logs", client);
     var MAX=5;
     for(var i=0;i<MAX;i++) {
@@ -69,7 +70,7 @@ function consumerWorker() {
 
 }
 
-function displayHash() {
+function displayHash(client) {
     hash.saveLink(123, "dayvson", "Maxxwell", "http://blah", client);
 //    hash.upVote(123);
 //    hash.upVote(123);
@@ -80,7 +81,7 @@ function displayHash() {
     hash.showDetails(456, client);
 }
 
-function setsAndDeals() {
+function setsAndDeals(client) {
     sets.markDealAsSent('deal:1','user:1',client);
     sets.markDealAsSent('deal:1','user:2',client);
     sets.markDealAsSent('deal:2','user:1',client);
@@ -94,7 +95,7 @@ function setsAndDeals() {
 
 }
 
-function leaderboard() {
+function leaderboard(client) {
     var leaderBoard = new sortedSets.LeaderBoard("game-score", client);
     leaderBoard.addUser("Arthur", 70);
     leaderBoard.addUser("KC", 20);
@@ -117,4 +118,14 @@ function leaderboard() {
       });
 //      client.quit();
     });
+}
+
+function bitMapUserVisitCounts(clientBuffers) {
+    bitmaps.storeDailyVisit('2015-01-01', '1', clientBuffers);
+    bitmaps.storeDailyVisit('2015-01-01', '2', clientBuffers);
+    bitmaps.storeDailyVisit('2015-01-01', '10', clientBuffers);
+    bitmaps.storeDailyVisit('2015-01-01', '55', clientBuffers);
+
+    bitmaps.countVisits('2015-01-01', clientBuffers);
+    bitmaps.showUserIdsFromVisit('2015-01-01', clientBuffers);
 }

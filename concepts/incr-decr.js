@@ -7,7 +7,7 @@ var logger=require("log4js").getLogger();
  */
 function upVote(id, client) {
   var key = "article:" + id + ":votes";
-  client.incr(key);
+  client.INCR(key);
 }
 
 /**
@@ -17,7 +17,7 @@ function upVote(id, client) {
  */
 function downVote(id, client) {
   var key = "article:" + id + ":votes";
-  client.decr(key);
+  client.DECR(key);
 }
 
 /**
@@ -28,7 +28,7 @@ function downVote(id, client) {
 function showResults(id, client) {
   var headlineKey = "article:" + id + ":headline";
   var voteKey = "article: " + id + ":votes";
-  client.mget([headlineKey, voteKey], function(err, replies) {
+  client.MGET([headlineKey, voteKey], function(err, replies) {
     if(err) {
       logger.error("Something went wrong", err);
     } else {
