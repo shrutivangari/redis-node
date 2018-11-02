@@ -22,6 +22,13 @@
     - Sorted sets
 10. Applications that involve real-time analytics, because they can tell wheter a user performaned an action or how many times an event occurred
     - Bitmaps
+11. 
+a. Counting the number of unique users who visited a website
+b. Counting the number of distinct terms that were search for on your website on a specific date or time
+c. Counting the number of distinct hashtags that were used by a user
+d. Counting the number of distinct words that appear in a book
+    - HyperLogLogs
+
 
 ## Redis key concepts
 - Redis is single threaded

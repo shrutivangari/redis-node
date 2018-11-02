@@ -47,3 +47,12 @@
 - Are memory efficient, support fast data lookups and can store up to 2^32 bits
 - Bitmap implementation uses far less memory than the Set implementation
 - Bitmaps are not always memory efficient
+
+## 7. HyperLogLog
+- Not a real data type, is an algorithm that uses randomization in order to provide a very good approximation of the number of unique elements that exist in the Set
+- Runs in O(1) constant time
+- Users a very small amount of memory
+- Up to 12kB of memory per key
+- Is probabilistic - it does not ensure 100% accuracy
+- Error rate = 0.81%
+- No practical limit for the cardinality of the sets that can be counted

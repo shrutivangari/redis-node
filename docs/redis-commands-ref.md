@@ -1,5 +1,6 @@
 # Redis Commands Reference -
 
+## SETS
 * SET
 Sets the key,value pair in Redis
 * GET
@@ -66,6 +67,9 @@ Removes and returns members from a set
 Returns the number of elements in a set (cardinality)
 * SMEMBERS
 Returns an array with all members of a set
+
+## SORTED SET
+
 * ZADD
 Adds one or many members to a Sorted set, ignores members that already exist
 * ZRANGE
@@ -82,6 +86,8 @@ Returns score of a member
 Returns the member rank (or index) ordered from low to high. The member with the lowest score has rank 0
 * ZREVRANK
 Returns the member rank (or index) ordered from high to low. The member with the highest score has rank 0
+
+## BITMAP
 * SETBIT
 Used to give a value to a Biptmap offset and it accepts only 1 or 0
 * GETBIT
@@ -91,3 +97,7 @@ Returns the number of bits marked at 1 in a Bitmap
 * BITSTOP
 Requires a destination key, a bitwise operation and a list of keys to apply to that operation and store the result in the destination key. Available bitwise operations are OR, AND, XOR and NOT
 
+## HYPDERLOGLOG
+* PFADD
+* PFCOUNT
+* PFMERGE
