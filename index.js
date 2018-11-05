@@ -6,6 +6,7 @@ var hash=require("./concepts/hash");
 var sets=require("./concepts/sets");
 var sortedSets=require("./concepts/sortedsets");
 var bitmaps=require("./concepts/bitmap");
+var hyperloglog=require("./concepts/hyperloglog");
 var logger = require("log4js").getLogger();
 
 logger.level='info';
@@ -24,6 +25,11 @@ client.quit();
 var clientBuffers = utils.createClient({return_buffers: true});
 bitMapUserVisitCounts(clientBuffers);
 clientBuffers.quit();
+
+
+var client = utils.createClient();
+numberOfVisitsToASiteHyperLogLog(client);
+client.quit();
 
 /**
  * Run the voting system to demonstrate incr-decr
@@ -129,3 +135,21 @@ function bitMapUserVisitCounts(clientBuffers) {
     bitmaps.countVisits('2015-01-01', clientBuffers);
     bitmaps.showUserIdsFromVisit('2015-01-01', clientBuffers);
 }
+
+function numberOfVisitsToASiteHyperLogLog(client) {
+    var MAX_USERS = 200;
+    var TOTAL_VISITS = 1000;
+
+    for (var i = 0; i < TOTAL_VISITS; i++) {
+        var username = 'user_' + Math.floor(1 + Math.random() * MAX_USERS);
+        var hour = Math.floor(Math.random() * 24);
+        hyperloglog.addVisit('2015-01-01T' + hour, username, client);
+    }
+
+    hyperloglog.count(['2015-01-01T0'], client); // 7
+    hyperloglog.count(['2015-01-01T5', '2015-01-01T6', '2015-01-01T7'], client); // 8
+
+    hyperloglog.aggregateDate('2015-01-01', client); // 9
+    hyperloglog.count(['2015-01-01'], client); // 10
+}
+
