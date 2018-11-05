@@ -99,5 +99,8 @@ Requires a destination key, a bitwise operation and a list of keys to apply to t
 
 ## HYPDERLOGLOG
 * PFADD
+Adds one or many strings to a HyperLogLog. Returns 1 if the cardinality was changed and 0 if it remains the same
 * PFCOUNT
+Accepts one or many keys as arguments. When a single argument is specified, it returns the approximate cardinality. When multiple keys are specified, it returns the approximate cardinality of the union of all unique elements.
 * PFMERGE
+Merges all the specified HyperLogLogs and stores the result in the destination key
