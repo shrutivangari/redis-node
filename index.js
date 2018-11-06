@@ -25,4 +25,5 @@ demo.numberOfVisitsToASiteHyperLogLog(client);
 demo.timeSeries(client, "string");
 demo.timeSeries(client, "hash");
 demo.timeSeriesSortedSet(client, "sorted-set");
+demo.timeSeries(client, "hyperloglog");
 client.quit();
