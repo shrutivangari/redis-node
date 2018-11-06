@@ -2,7 +2,7 @@ function TimeSeriesString(client, namespace) {
     this.namespace = namespace;
     this.client = client;
     this.units = {
-        seond: 1,
+        second: 1,
         minute: 60,
         hour: 60 * 60,
         day: 24 * 60 * 60

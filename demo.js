@@ -129,14 +129,14 @@ function numberOfVisitsToASiteHyperLogLog(client) {
     hyperloglog.count(['2015-01-01'], client); // 10
 }
 
-function timeSeries(client) {
+function timeSeries(client, dataType) {
 
-    if (process.argv.length < 3) {
-        console.log("ERROR: You need to specify a data type!");
-        console.log("$ node using-timeseries.js [string|hash]");
-        process.exit(1);
-    }
-    var dataType = process.argv[2];
+    // if (process.argv.length < 3) {
+    //     console.log("ERROR: You need to specify a data type!");
+    //     console.log("$ node using-timeseries.js [string|hash]");
+    //     process.exit(1);
+    // }
+    // var dataType = process.argv[2];
 
     client.flushall();
 
@@ -164,6 +164,26 @@ function displayResults(granularityName, results) {
     console.log();
 }
 
+function timeSeriesSortedSet(client, dataType) {
+    client.flushall();
+
+    var timeseries = require("./concepts/time-series-" + dataType);
+
+    var concurrentPlays = new timeseries.TimeSeries(client, "concurrentplays");
+    var beginTimestamp = 0;
+
+    concurrentPlays.insert(client,beginTimestamp, "user:max");
+    concurrentPlays.insert(client, beginTimestamp, "user:max");
+    concurrentPlays.insert(client, beginTimestamp + 1, "user:hugo");
+    concurrentPlays.insert(client, beginTimestamp + 1, "user:renata");
+    concurrentPlays.insert(client, beginTimestamp + 3, "user:hugo");
+    concurrentPlays.insert(client, beginTimestamp + 61, "user:kc");
+
+    concurrentPlays.fetch(client, "1sec", beginTimestamp, beginTimestamp + 4, displayResults);
+    concurrentPlays.fetch(client, "1min", beginTimestamp, beginTimestamp + 120, displayResults);
+}
+
+
 module.exports = {
     votingSystemIncrementDecrement: votingSystemIncrementDecrement,
     producerWorker: producerWorker,
@@ -173,5 +193,6 @@ module.exports = {
     leaderboard: leaderboard,
     bitMapUserVisitCounts: bitMapUserVisitCounts,
     numberOfVisitsToASiteHyperLogLog: numberOfVisitsToASiteHyperLogLog,
-    timeSeries: timeSeries
+    timeSeries: timeSeries,
+    timeSeriesSortedSet: timeSeriesSortedSet
 }

@@ -22,5 +22,7 @@ clientBuffers.quit();
 
 var client = utils.createClient();
 demo.numberOfVisitsToASiteHyperLogLog(client);
-demo.timeSeries(client);
+demo.timeSeries(client, "string");
+demo.timeSeries(client, "hash");
+demo.timeSeriesSortedSet(client, "sorted-set");
 client.quit();
