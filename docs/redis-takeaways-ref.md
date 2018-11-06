@@ -34,7 +34,13 @@ b. Minimum wage year-by-year
 c. Daily changes in stock prices
 d. Product purchases month-by-month
 e. Climate changes
-
+    - Time Series
+13. 
+a. News and weather dashboards
+b. Chat applications
+c. Push notifications, such as subway delay alerts
+d. Remote code execution, similar to what the SaltStack took supports
+    - Pub/Sub
 
 ## Redis key concepts
 - Redis is single threaded

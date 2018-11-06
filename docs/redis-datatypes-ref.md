@@ -57,7 +57,15 @@
 - Error rate = 0.81%
 - No practical limit for the cardinality of the sets that can be counted
 
-## 8. Time Series
+# Other Stuff
+
+## 1. Time Series
 - An ordered sequence of values (data points) made over a time interval
 - Face challenges with storage, since the dataset can grow too large very quickly
 - As time goes by, the smallest granularities lose their values
+
+
+## 2. Pub/Sub
+- Publish-Subscribe which is a pattern where messages are not sent directly to specific receivers
+- Publishers send messages to channels, subscribers receive these messages if they are listening to a given channel
+- 

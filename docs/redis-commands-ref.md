@@ -106,3 +106,9 @@ Accepts one or many keys as arguments. When a single argument is specified, it r
 Merges all the specified HyperLogLogs and stores the result in the destination key
 
 ## TIME SERIRES
+* MULTI
+Multiple commands at the same time
+
+## PUB/SUB
+* PUBLISH
+Sends a message to the Redis channel, and it returns the number of clients that received that message. A message gets lost if there are no clients subscribed to the channel when it comes in.
