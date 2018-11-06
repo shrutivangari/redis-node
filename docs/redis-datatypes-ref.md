@@ -56,3 +56,8 @@
 - Is probabilistic - it does not ensure 100% accuracy
 - Error rate = 0.81%
 - No practical limit for the cardinality of the sets that can be counted
+
+## 8. Time Series
+- An ordered sequence of values (data points) made over a time interval
+- Face challenges with storage, since the dataset can grow too large very quickly
+- As time goes by, the smallest granularities lose their values

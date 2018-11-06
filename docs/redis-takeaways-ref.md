@@ -28,6 +28,12 @@ b. Counting the number of distinct terms that were search for on your website on
 c. Counting the number of distinct hashtags that were used by a user
 d. Counting the number of distinct words that appear in a book
     - HyperLogLogs
+12. 
+a. Usage of specific words or terms in a newspaper over time
+b. Minimum wage year-by-year
+c. Daily changes in stock prices
+d. Product purchases month-by-month
+e. Climate changes
 
 
 ## Redis key concepts

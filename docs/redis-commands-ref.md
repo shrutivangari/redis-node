@@ -104,3 +104,5 @@ Adds one or many strings to a HyperLogLog. Returns 1 if the cardinality was chan
 Accepts one or many keys as arguments. When a single argument is specified, it returns the approximate cardinality. When multiple keys are specified, it returns the approximate cardinality of the union of all unique elements.
 * PFMERGE
 Merges all the specified HyperLogLogs and stores the result in the destination key
+
+## TIME SERIRES
