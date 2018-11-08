@@ -112,3 +112,11 @@ Multiple commands at the same time
 ## PUB/SUB
 * PUBLISH
 Sends a message to the Redis channel, and it returns the number of clients that received that message. A message gets lost if there are no clients subscribed to the channel when it comes in.
+* SUBSCRIBE
+Subscribe a client to one or many channels
+* UNSUBSCRIBE
+Unsubscribes a client from one or many channels
+* PSUBSCRIBE/PUNSUBSCRIBE
+Same as SUBSCRIBE/UNSUBSCRIBE but they accept glob-style patterns as channel names
+Once a Redis client executes the command SUBSCRIBE/PSUBSCRIBE, it enters the subscribe mode and stops accepting commands, except for the command SUBSCRIBE/PSUBSCRIBE/UNSUBSCRIBE/PUNSUBSCRIBE
+
