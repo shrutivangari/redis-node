@@ -6,7 +6,6 @@ var sets=require("./concepts/sets");
 var sortedSets=require("./concepts/sortedsets");
 var bitmaps=require("./concepts/bitmap");
 var hyperloglog=require("./concepts/hyperloglog");
-var pubSub=require("./concepts/publisher");
 /**
  * Run the voting system to demonstrate incr-decr
  */
@@ -183,11 +182,6 @@ function timeSeriesSortedSet(client, dataType) {
     concurrentPlays.fetch(client, "1min", beginTimestamp, beginTimestamp + 120, displayResults);
 }
 
-function pubSubPublisher(client, channel, command) {
-    pubSub.publish(client, channel, command);
-}
-
-
 module.exports = {
     votingSystemIncrementDecrement: votingSystemIncrementDecrement,
     producerWorker: producerWorker,
@@ -198,6 +192,5 @@ module.exports = {
     bitMapUserVisitCounts: bitMapUserVisitCounts,
     numberOfVisitsToASiteHyperLogLog: numberOfVisitsToASiteHyperLogLog,
     timeSeries: timeSeries,
-    timeSeriesSortedSet: timeSeriesSortedSet,
-    pubSubPublisher: pubSubPublisher
+    timeSeriesSortedSet: timeSeriesSortedSet
 }

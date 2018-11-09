@@ -119,4 +119,17 @@ Unsubscribes a client from one or many channels
 * PSUBSCRIBE/PUNSUBSCRIBE
 Same as SUBSCRIBE/UNSUBSCRIBE but they accept glob-style patterns as channel names
 Once a Redis client executes the command SUBSCRIBE/PSUBSCRIBE, it enters the subscribe mode and stops accepting commands, except for the command SUBSCRIBE/PSUBSCRIBE/UNSUBSCRIBE/PUNSUBSCRIBE
+* PUBSUB
+Introspects the state of the Redis Pub/Sub system. This command accepts three subcommands
+** CHANNELS
+Returns all active channels (channels with at least one subscriber). This command accepts an optional parameter, which is a glob-style pattern. If the pattern is specified, all channel names that match the pattern are returned; if no pattern is specified, all channel names are returned. PUBSUB CHANNELS [pattern]
+** NUMSUB
+Returns the number of clients connected to channels via the SUBSCRIBE command. This accepts many channel names as arguments. PUBSUB NUMSUB [channel-1....channel-N]
+** NUMPAT
+Returns the number of clients connected to channels via the PUBSUBSCRIBE command. This command does not accept channel patterns as arguments. PUBSUB NUMPAT
 
+## TRANSACTION
+* MULTI
+Beginning of a transaction
+* EXEC
+Marks its end

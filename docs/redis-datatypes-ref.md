@@ -68,4 +68,13 @@
 ## 2. Pub/Sub
 - Publish-Subscribe which is a pattern where messages are not sent directly to specific receivers
 - Publishers send messages to channels, subscribers receive these messages if they are listening to a given channel
-- 
+
+## 3. Transactions
+- A sequence of commands executed in order and atomically
+- Any commands between MULTI and EXEC are serialized and executed as an atomic operation
+- Does not serve any other client in the middle of a transaction
+- All commands in a transaction are queued in the client and are only sent to the server when the EXEC command is executed
+- It is possible to prevent a transaction from being executed by using the DISCARD command instead of EXEC
+- Usually, Redis clients prevent a transaction from being sent to Redis if it contains command syntax errors
+- Redis executes commands in order, if any of them fail, it proceeds to the next command
+- Downside: It is not possible to make any decisions inside the transaction, since all the commands are queued

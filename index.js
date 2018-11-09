@@ -36,8 +36,13 @@ demo.timeSeries(client, "hyperloglog");
 client.quit();
 
 /**
- * Demo Pub/Sub
+ * Demo Pub/Sub - run publisher.js and subscriber.js individually
+ * 1. Open a terminal and type "node subscriber.js channel-1"
+ * 2. Open a second terminal and type "node subscriber.js channel-2"
+ * 3. Open a third terminal and type "node publisher.js global PING"
+ * You should see PING on both the terminals
+ * 4. On the third terminal type "node publisher.js channel-1 DATE"
+ * On the first terminal you should see the current date
+ * 5. On the third terminal type "node publisher.js channel-2 HOSTNAME"
+ * On the second terminal you should see the host name
  */
-var client = utils.createClient();
-demo.pubSubPublisher(client, channel, command);
-client.quit();
