@@ -6,6 +6,7 @@ var sets=require("./concepts/sets");
 var sortedSets=require("./concepts/sortedsets");
 var bitmaps=require("./concepts/bitmap");
 var hyperloglog=require("./concepts/hyperloglog");
+var transaction=require("./concepts/transaction-bank");
 /**
  * Run the voting system to demonstrate incr-decr
  */
@@ -182,6 +183,23 @@ function timeSeriesSortedSet(client, dataType) {
     concurrentPlays.fetch(client, "1min", beginTimestamp, beginTimestamp + 120, displayResults);
 }
 
+function transactionBank(client) {
+    client.MSET("max:checkings", 100, "hugo:checkings", 100, function(err, reply) {
+        console.log("Max checkings: 100");
+        console.log("Huge checkings: 100");
+        // console.log("Getting values, " + console.log(client.get("max:checkings")));
+        // console.log(client.mget("max:checkings","hugo:checkings"));
+        transaction.transfer(client, "max:checkings", "hugo:checkings", 40, function(err, balance) {
+            if(err) {
+                console.log("err", err);
+            } else {
+                console.log("Transferred 40 from Max to Hugo");
+                console.log("Max balance:", balance);
+            }
+        });
+    });
+}
+
 module.exports = {
     votingSystemIncrementDecrement: votingSystemIncrementDecrement,
     producerWorker: producerWorker,
@@ -192,5 +210,6 @@ module.exports = {
     bitMapUserVisitCounts: bitMapUserVisitCounts,
     numberOfVisitsToASiteHyperLogLog: numberOfVisitsToASiteHyperLogLog,
     timeSeries: timeSeries,
-    timeSeriesSortedSet: timeSeriesSortedSet
+    timeSeriesSortedSet: timeSeriesSortedSet,
+    transactionBank: transactionBank
 }
