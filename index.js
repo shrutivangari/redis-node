@@ -33,7 +33,8 @@ demo.timeSeries(client, "string");
 demo.timeSeries(client, "hash");
 demo.timeSeriesSortedSet(client, "sorted-set");
 demo.timeSeries(client, "hyperloglog");
-demo.transactionBank(client);
+// demo.transactionBank(client);
+// demo.transactionWatch(client);
 client.quit();
 
 /**

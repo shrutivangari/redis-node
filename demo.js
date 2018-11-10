@@ -7,6 +7,7 @@ var sortedSets=require("./concepts/sortedsets");
 var bitmaps=require("./concepts/bitmap");
 var hyperloglog=require("./concepts/hyperloglog");
 var transaction=require("./concepts/transaction-bank");
+var transactionW=require("./concepts/transaction-watch");
 /**
  * Run the voting system to demonstrate incr-decr
  */
@@ -200,6 +201,12 @@ function transactionBank(client) {
     });
 }
 
+function transactionWatch(client) {
+    transactionW.zpop(client, "presidents", function(member) {
+        console.log("The first president in the group is:", member);
+    });
+}
+
 module.exports = {
     votingSystemIncrementDecrement: votingSystemIncrementDecrement,
     producerWorker: producerWorker,
@@ -211,5 +218,6 @@ module.exports = {
     numberOfVisitsToASiteHyperLogLog: numberOfVisitsToASiteHyperLogLog,
     timeSeries: timeSeries,
     timeSeriesSortedSet: timeSeriesSortedSet,
-    transactionBank: transactionBank
+    transactionBank: transactionBank,
+    transactionWatch: transactionWatch
 }

@@ -86,6 +86,8 @@ Returns score of a member
 Returns the member rank (or index) ordered from low to high. The member with the lowest score has rank 0
 * ZREVRANK
 Returns the member rank (or index) ordered from high to low. The member with the highest score has rank 0
+* ZPOP
+Removes the first element of a Sorted Set
 
 ## BITMAP
 * SETBIT
@@ -133,3 +135,9 @@ Returns the number of clients connected to channels via the PUBSUBSCRIBE command
 Beginning of a transaction
 * EXEC
 Marks its end
+* DISCARD
+Discard the transaction
+* WATCH
+Make the execution of a transaction conditional which implements an optimistic lock on a group of keys. The command marks keys as being watched so that EXEC executes the transaction only if the keys being watched were not changed. Otherwise, it returns a null reply and the operation needs to be repeated; this is the reason it is called an optimistic lock
+* UNWATCH
+Removes keys from the watch list
