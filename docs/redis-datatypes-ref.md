@@ -78,3 +78,14 @@
 - Usually, Redis clients prevent a transaction from being sent to Redis if it contains command syntax errors
 - Redis executes commands in order, if any of them fail, it proceeds to the next command
 - Downside: It is not possible to make any decisions inside the transaction, since all the commands are queued
+
+## 4. Pipelines
+- A way to send multiple commands together to the Redis server without waiting for individual replies
+- The replies are all read at once by the client
+- The time taken for a Redis client to send a command and obtain a reply from the Redis server is called Round Trip Time (RTT)
+- When multiple commands are sent, there are multiple RTTs
+- Piplelines can decrease the number of RTTs because commands are grouped, so a pipeline with 10 commands will have only one RTT. This improve the network's performance significantly
+- When Redis is used without pipelines, each command needs to wait for a reply
+- Redis commands sent in a pipeline must be independent
+- They run sequentially in the server (the order is preserved), but they do not run as a transaction
+- Even though pipelines are neither transactional nor atomic - this means that different Redis commands may occur between the ones in the pipeline, they are still useful because they can save a lot of network time, preventing the network from becoming a bottleneck as it often does with a heavy load applications

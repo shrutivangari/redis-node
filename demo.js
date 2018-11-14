@@ -24,7 +24,7 @@ function votingSystemIncrementDecrement(client) {
 
     voting.showResults(12345, client);
     voting.showResults(10001, client);
-    voting.showResults(60056, client);
+    voting.showResults(60056, client)                                                                                    ;
 }
 
 /**
