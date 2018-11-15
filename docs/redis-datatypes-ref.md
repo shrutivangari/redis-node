@@ -94,4 +94,9 @@
 - Lua : C API, used in game development
 - Lua scripts are atomically executed, which means that the Redis server is blocked during script execution
 - Redis has a default timeout of 5 seconds to run any script, although this value can be changed through the configuration lua-time-limit
-- 
+- There are two functions that execute Redis commands: redis.call an redis.pcall
+-- redis.call requires the command name and all its parameters, and it returns the result of the executed command
+-- If there are errors, the redis.call aborts the script
+-- The function redis.pcall is similar to redis.call but in the event of an error, it returns the error as a Lua table and continues the script execution
+-- Every script can return a value through the keyboard return, and if there is not explicit return, the value nil is returned
+- It is possible to pass Redis key names and parameters to a Lua script, and they will be available inside the Lua script through the variables KEYS and ARGV, respectively.

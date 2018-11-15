@@ -141,3 +141,63 @@ Discard the transaction
 Make the execution of a transaction conditional which implements an optimistic lock on a group of keys. The command marks keys as being watched so that EXEC executes the transaction only if the keys being watched were not changed. Otherwise, it returns a null reply and the operation needs to be repeated; this is the reason it is called an optimistic lock
 * UNWATCH
 Removes keys from the watch list
+
+## LUA
+* Comment
+--
+
+* Global variable declaration 
+x = 123
+
+* Local variable declaration
+local y = 456
+
+* Function definition 
+function hello_world()
+    return "Hello World"
+end
+
+* Iteration 
+for i = 1, 10 do
+    print(i)
+end
+
+* Conditionals
+if x == 123 then
+    print("x is the magic number")
+else 
+    print("I have no idea what x is ")
+end
+
+* String concatenation
+print("Hello" .. "World")
+
+* Using a table as an array - arrays in Lua start indexing at 1, not at 0
+data_types = {1.0, 123, "redis", true, false, hello_world}
+print(data_types[3]) -- the output is "redis"
+
+* Using a table as a hash
+languages = {lua = 1993, javascript = 1995, python = 1991, ruby = 1995}
+print("Lua was created in " .. languages["lua"])
+print("JavaScript was created in " .. languages.javascript)
+
+## Redis and Lua
+
+* redis.call
+Requires the command name and all its parameters, and it returns the result of the executed command. If there are errors, it aborts the script 
+
+* redis.pcall
+Is similar, but in the event of an error, it returns the error as a Lua table adn continues the script execution. Every script can return a value through the keyword return, and if there is no explicit return, the nil value is returned
+
+* EVAL script numkeys key [key ...] arg [arg ...]
+Runs a Lua script
+The parameters are as follows:
+
+script: The Lua script itself, as a string
+numkeys: The number of Redis keys being passed as parameters to the script
+key: The key name that will be available through the variable KEYS inside the script
+arg: An additional argument that will be available through the variable ARGV inside the script
+
+
+* EVALSHA
+Runs a Lua script

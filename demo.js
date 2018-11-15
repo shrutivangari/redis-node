@@ -8,6 +8,7 @@ var bitmaps=require("./concepts/bitmap");
 var hyperloglog=require("./concepts/hyperloglog");
 var transaction=require("./concepts/transaction-bank");
 var transactionW=require("./concepts/transaction-watch");
+var lua=require("./concepts/lua");
 /**
  * Run the voting system to demonstrate incr-decr
  */
@@ -207,6 +208,10 @@ function transactionWatch(client) {
     });
 }
 
+function callLua(client) {
+    lua.introLua(client);
+}
+
 module.exports = {
     votingSystemIncrementDecrement: votingSystemIncrementDecrement,
     producerWorker: producerWorker,
@@ -219,5 +224,6 @@ module.exports = {
     timeSeries: timeSeries,
     timeSeriesSortedSet: timeSeriesSortedSet,
     transactionBank: transactionBank,
-    transactionWatch: transactionWatch
+    transactionWatch: transactionWatch,
+    callLua: callLua
 }

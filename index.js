@@ -35,6 +35,7 @@ demo.timeSeriesSortedSet(client, "sorted-set");
 demo.timeSeries(client, "hyperloglog");
 // demo.transactionBank(client);
 // demo.transactionWatch(client);
+demo.callLua(client);
 client.quit();
 
 /**
