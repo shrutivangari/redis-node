@@ -89,3 +89,9 @@
 - Redis commands sent in a pipeline must be independent
 - They run sequentially in the server (the order is preserved), but they do not run as a transaction
 - Even though pipelines are neither transactional nor atomic - this means that different Redis commands may occur between the ones in the pipeline, they are still useful because they can save a lot of network time, preventing the network from becoming a bottleneck as it often does with a heavy load applications
+
+## 5. Scripting
+- Lua : C API, used in game development
+- Lua scripts are atomically executed, which means that the Redis server is blocked during script execution
+- Redis has a default timeout of 5 seconds to run any script, although this value can be changed through the configuration lua-time-limit
+- 
