@@ -201,3 +201,16 @@ arg: An additional argument that will be available through the variable ARGV ins
 
 * EVALSHA
 Runs a Lua script
+
+## MISC
+* INFO
+Returns all Redis server statistics, including information about the Redis version, operating system, connected clients, memory usage, persistence, replication and keyspace. By default, it will show all the sections
+* DBSIZE
+Returns the number of existing keys in a Redis server
+* DEBUG SEGFAULT
+Crashes the Redis server process by performing an invalid memory access. To simulate bugs during development of your application
+* MONITOR
+SHoes all the commands processed by the Redis server in real time. It can be helpful for seeing how busy a Redis server is. It has a cost and an unscientific benchmark test says it could reduce throughput by 50% 
+* CLIENT LIST
+Returns a list of all clients connected to the server, as well as relevant information and statistics about the clients for example - IP Address, name and idle time
+* 
