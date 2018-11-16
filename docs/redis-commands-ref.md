@@ -1,4 +1,4 @@
-# Redis Commands Reference -
+# Redis Commands Reference
 
 ## SETS
 * SET
@@ -213,4 +213,51 @@ Crashes the Redis server process by performing an invalid memory access. To simu
 SHoes all the commands processed by the Redis server in real time. It can be helpful for seeing how busy a Redis server is. It has a cost and an unscientific benchmark test says it could reduce throughput by 50% 
 * CLIENT LIST
 Returns a list of all clients connected to the server, as well as relevant information and statistics about the clients for example - IP Address, name and idle time
-* 
+* CLIENT SETNAME
+Command changes a client name; only useful for debugging purposes
+* CLIENT KILL
+Terminates a client connection. It is possible to terminate client connections by IP, port, ID or type
+* FLUSHALL
+Delets all keys from Redis - this cannot be undone
+* RANDOMKEY
+Returns a random existing key name. This can get an overview of the available keys in Redis
+* KEYS
+Analyzes all the existing keys in Redis. If the keyspace is large, it may block the Redis server entirely during its execution
+* EXPIRE
+Sets a timeout in seconds for a given key. The key will be deleted after the specified amount of seconds. A negative timeout will delete the key instantaneously (just like running the command DEL)
+* EXPIREAT
+Sets a timeout for a given key based on a Unix timestamp. A timestamp of the past will delete the key instantaneously
+* TTL
+Returns the remaining time to live (in seconds) of a key that has an associated timeout. If the key does not have an associated TTL, it returns -1 and if the key does not exist, it returns -2
+* PTTL
+Does the same thing as TTL but the return value is in milliseconds rather than seconds
+* PERSIST
+Removes the existing timeout of a given key. Such a key will never expire unless a new timeout is set. It returns 1 if the timeout is removed or 0 if the key does not have an associated timeout
+* SETEX
+Sets a value to a given key and also sets an expiration automatically. It is a combination of the commands SET and EXPIRE
+* DEL
+Removes one or many keys from Redis and returns the number of removed keys - this command cannot be undone
+* EXISTS
+Returns 1 if a certain key exists and 0 if it does not
+* PING
+Returns the string "PONG". It is useful for testing a server/client connection and verifying that Redis is able to exchange data.
+* MIGRATE
+Moves a given key to a destination Redis server. The is an atomic command and during the key migration both Redis servers are blocked. If the key already exists in the destination, this command fails unless the REPLACE parameter is specified
+** COPY - Keep the key in the local Redis server and create a copy in the destination Redis server
+** REPLACE - Replace the existing key in the destination server
+* SELECT
+Redis has a concept of multiple databases, each of which is identified by a number from 0 to 15 (there are 16 databases by default). It is not recommended to use multiple databases with Redis. A better approach would be to use multiple redis-server processes rather than a single one, because multiple processes are able to use multiple CPU cores and give better insights into bottlenecks.
+The select command changes the current database that the client is connected to. The default database is 0.
+* AUTH
+Is used to authorize a client to connect to Redis. If authorization is enabled on the Redis server, clients are allowed to run commands only after executing the AUTH command with the right authorization key.
+* SCRIPT KILL
+Terminates the running Lua script if no write operations have been performed by the script. If the script has performed any write operations, the SHUTDOWN NOSAVE command must be used. There are three return values for this command:
+** OK
+** NOTBUSY - Not scripts in execution right now
+** UNKILLABLE - Sorry the script already executed write commands against the dataset. You can either wait the script termination or kill the server in a hard way using the SHUTDOWN NOSAVE command
+* SHUTDOWN
+Stops all clients causes data to persist if enabled, and shuts down the Redis server. This command accepts one of the following optional parameters - 
+** SAVE - Forces Redis to save all of the data to a file called dump.rdb even if persistence is not enabled
+** NOSAVE - Prevents Redis from persisting data to the disk, even if persistence is enabled
+* OBJECT ENCODNG
+Returns the encoding used by a given key
