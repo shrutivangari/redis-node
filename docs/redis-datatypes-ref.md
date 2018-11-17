@@ -34,8 +34,8 @@
 - Not as fast as Set operations because the scores need to be compared
 - Adding, removing, updating an item in a Sorted set = O(log(N))
 - Internally Sorted Sets are implemented as two separate data structures:
--- A skip list with a hash table - this allows fast search within an ordered sequence of elements
--- A ziplist
+ - A skip list with a hash table - this allows fast search within an ordered sequence of elements
+ - A ziplist
 - Elements are added to a sorted set with a score and a string value. There are two ordering criteria: the element score and the element value. If a tie exists between the element scores, the lexicographical order of the element values is used to break the tie.
 
 ## 6. Bitmap/Bit Arrays/Bitsets
@@ -95,8 +95,44 @@
 - Lua scripts are atomically executed, which means that the Redis server is blocked during script execution
 - Redis has a default timeout of 5 seconds to run any script, although this value can be changed through the configuration lua-time-limit
 - There are two functions that execute Redis commands: redis.call an redis.pcall
--- redis.call requires the command name and all its parameters, and it returns the result of the executed command
--- If there are errors, the redis.call aborts the script
--- The function redis.pcall is similar to redis.call but in the event of an error, it returns the error as a Lua table and continues the script execution
--- Every script can return a value through the keyboard return, and if there is not explicit return, the value nil is returned
+ - redis.call requires the command name and all its parameters, and it returns the result of the executed command
+ - If there are errors, the redis.call aborts the script
+ - The function redis.pcall is similar to redis.call but in the event of an error, it returns the error as a Lua table and continues the script execution
+ - Every script can return a value through the keyboard return, and if there is not explicit return, the value nil is returned
 - It is possible to pass Redis key names and parameters to a Lua script, and they will be available inside the Lua script through the variables KEYS and ARGV, respectively.
+
+## 6. DataType Optimizations
+- In Redis, all data types can use different encodings to save memory or improve performance
+- A String that has only digits uses less memory than a string of letters because they use difference encodings
+- Data types will use different encodings based on thresholds defined in the Redis server configuration
+- Redis configurations can be specified using the command-line option or the CONFIG command or redis.conf
+- These encodings are not configurable
+- The following encodings are available for
+
+- Strings:
+  - int
+  This is used when the string is represented by a 63-bit signed integer
+  - embstr
+  This is used for strings with fewer than 40 bytes
+  - raw
+  This is used for strings with more than 40 bytes
+- Lists:
+  - ziplist
+  This is used when the List size has fewer elements than the configuration list-max-ziplist entries and each List element has fewer bytes than the configuration list-max-ziplist-value
+  - linkedlist
+  This is used when the previous limits are exceeded
+- Set
+  - intset
+  This is used when all elements of a Set are integers and the Set cardinality is smaller than the configuration set-max-intset-entries
+  - hashtable
+  This is used when any element of a Set is not an integer or the Set cardinality exceeds the configuration set-max-intset-entries
+- Hash
+  - ziplist
+  Used when the number of fields in the Hash does not exceed the configuration hash-max-ziplist-entries and each field name and value of the Hash is less than the configuration hash-max-ziplist-value
+  - hashtable
+  Used when a hash size or any of its values exceed the configurations hash-max-ziplist-entries and hash-max-ziplist-value
+- Sorted Set
+  - ziplist = dually linked list designed to be memory-efficient and lookups are performed in liner time O(n)
+  Used when a Sorted Set has fewer entries than the configuration set-max-ziplist-entries and each of its values are smaller than zset-max-ziplist-value
+  - skiplist and hashtable = O(1)
+  These are used when the Sorted Set number of entries or size of any of its values exceeds the configurations set-max-ziplist-entries and zset-max-ziplist-values

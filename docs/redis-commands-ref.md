@@ -123,11 +123,11 @@ Same as SUBSCRIBE/UNSUBSCRIBE but they accept glob-style patterns as channel nam
 Once a Redis client executes the command SUBSCRIBE/PSUBSCRIBE, it enters the subscribe mode and stops accepting commands, except for the command SUBSCRIBE/PSUBSCRIBE/UNSUBSCRIBE/PUNSUBSCRIBE
 * PUBSUB
 Introspects the state of the Redis Pub/Sub system. This command accepts three subcommands
-** CHANNELS
+  - CHANNELS
 Returns all active channels (channels with at least one subscriber). This command accepts an optional parameter, which is a glob-style pattern. If the pattern is specified, all channel names that match the pattern are returned; if no pattern is specified, all channel names are returned. PUBSUB CHANNELS [pattern]
-** NUMSUB
+  - NUMSUB
 Returns the number of clients connected to channels via the SUBSCRIBE command. This accepts many channel names as arguments. PUBSUB NUMSUB [channel-1....channel-N]
-** NUMPAT
+  - NUMPAT
 Returns the number of clients connected to channels via the PUBSUBSCRIBE command. This command does not accept channel patterns as arguments. PUBSUB NUMPAT
 
 ## TRANSACTION
@@ -243,8 +243,8 @@ Returns 1 if a certain key exists and 0 if it does not
 Returns the string "PONG". It is useful for testing a server/client connection and verifying that Redis is able to exchange data.
 * MIGRATE
 Moves a given key to a destination Redis server. The is an atomic command and during the key migration both Redis servers are blocked. If the key already exists in the destination, this command fails unless the REPLACE parameter is specified
-** COPY - Keep the key in the local Redis server and create a copy in the destination Redis server
-** REPLACE - Replace the existing key in the destination server
+  - COPY - Keep the key in the local Redis server and create a copy in the destination Redis server
+  - REPLACE - Replace the existing key in the destination server
 * SELECT
 Redis has a concept of multiple databases, each of which is identified by a number from 0 to 15 (there are 16 databases by default). It is not recommended to use multiple databases with Redis. A better approach would be to use multiple redis-server processes rather than a single one, because multiple processes are able to use multiple CPU cores and give better insights into bottlenecks.
 The select command changes the current database that the client is connected to. The default database is 0.
@@ -252,12 +252,12 @@ The select command changes the current database that the client is connected to.
 Is used to authorize a client to connect to Redis. If authorization is enabled on the Redis server, clients are allowed to run commands only after executing the AUTH command with the right authorization key.
 * SCRIPT KILL
 Terminates the running Lua script if no write operations have been performed by the script. If the script has performed any write operations, the SHUTDOWN NOSAVE command must be used. There are three return values for this command:
-** OK
-** NOTBUSY - Not scripts in execution right now
-** UNKILLABLE - Sorry the script already executed write commands against the dataset. You can either wait the script termination or kill the server in a hard way using the SHUTDOWN NOSAVE command
+  -  OK
+  - NOTBUSY - Not scripts in execution right now
+  - UNKILLABLE - Sorry the script already executed write commands against the dataset. You can either wait the script termination or kill the server in a hard way using the SHUTDOWN NOSAVE command
 * SHUTDOWN
 Stops all clients causes data to persist if enabled, and shuts down the Redis server. This command accepts one of the following optional parameters - 
-** SAVE - Forces Redis to save all of the data to a file called dump.rdb even if persistence is not enabled
-** NOSAVE - Prevents Redis from persisting data to the disk, even if persistence is enabled
-* OBJECT ENCODNG
+  - SAVE - Forces Redis to save all of the data to a file called dump.rdb even if persistence is not enabled
+  - NOSAVE - Prevents Redis from persisting data to the disk, even if persistence is enabled
+* OBJECT ENCODING
 Returns the encoding used by a given key
