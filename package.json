@@ -12,7 +12,8 @@
   },
   "scripts": {
     "test": "npm test",
-    "start": "node index.js"
+    "start": "node index.js",
+    "benchmark": "node benchmaks.js"
   },
   "repository": {
     "type": "git",
