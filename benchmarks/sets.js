@@ -1,3 +1,10 @@
+/**
+ * redis-cli FLUSHALL &&
+ * node benchmark-set.js &&
+ * redis-cli INFO memory
+ *
+ * @param client
+ */
 function benchmarkSets(client) {
     var MAX_USERS = 100000;
     var MAX_DEALS = 12;

@@ -45,3 +45,6 @@ d. Remote code execution, similar to what the SaltStack took supports
 ## Redis key concepts
 - Redis is single threaded
 - Commands are atomic -> a race condition will never happen
+
+## Redis common pitfalls - when to use what
+1. 
