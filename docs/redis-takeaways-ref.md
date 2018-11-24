@@ -47,4 +47,18 @@ d. Remote code execution, similar to what the SaltStack took supports
 - Commands are atomic -> a race condition will never happen
 
 ## Redis common pitfalls - when to use what
-1. 
+1. The wrong data type for the job
+- At Yipit, we used to store all deals that were going to be sent to users in a Redis Set. Although the solution worked, developers thought it was memory-inefficient because the Yipit user base was large. 
+- To rectify this issue, some of the developers thought that changing the Set implementation to a Bitmap implementation would make the solution memory-efficient. 
+- In other contexts, Bitmaps performed so well that developers thought they were the answer to everything—this turned out to be untrue.
+- The Bitmap implementation used approximately 253 MB while the Set implementation used approximately 14 MB. The Bitmap implementation (which was supposed to be cheaper) costs 18 times more
+
+2. Multiple Redis databases
+- Do not use, deprecated.
+- We can switch between databases using the command SELECT <dbid> - This is deprecated, do not use in prod
+- In general, it is better to launch multiple Redis servers on the same machine rather than using multiple databases. Redis is single threaded. Thus,a single Redis server with multiple databases only uses one CPU core. 
+- Some Redis clients do not even support multiple Redis databases since it would make it hard to create a thread-safe implementation
+
+3. Keys without a namespace 
+- It is good practice to use namespaces when defining your keys in Redis in order to avoid key name collisions and to organize your keys based on your application section or area
+- 
