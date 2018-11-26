@@ -61,4 +61,11 @@ d. Remote code execution, similar to what the SaltStack took supports
 
 3. Keys without a namespace 
 - It is good practice to use namespaces when defining your keys in Redis in order to avoid key name collisions and to organize your keys based on your application section or area
-- 
+- Redis does not support namespacing
+- Common way of adding a namespace to Redis keys is by prepending a namespace (name-space:key_name)
+
+4. Using swap
+- A Linux kernel parameter called swappiness controls when the operating system will start using the swap space
+- Swap space is a portion of a hark disk drive that is used for virtual memory
+- Values = 0 to 100
+- Lower value 
