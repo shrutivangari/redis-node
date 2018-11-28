@@ -68,4 +68,13 @@ d. Remote code execution, similar to what the SaltStack took supports
 - A Linux kernel parameter called swappiness controls when the operating system will start using the swap space
 - Swap space is a portion of a hark disk drive that is used for virtual memory
 - Values = 0 to 100
-- Lower value 
+- Lower value tells the kernel to use the swap space less frequently 
+- Higher values tells it to use the swap space more frequently
+- Default value = 60
+- vm.swappiness=0 -> Linux 3.5 and newer - Disables swap entirely; Linux 3.4 and older - Swap only to avoid an "out of memory" condition
+- vm.swappiness=1 -> Linux 3.5 and newer - Minimum amount of swapping without disabling it entirely
+- vm.swappiness=100 -> Linux will swap aggressively
+- In a scenario where Redis needs to access from the swap space, the OS needs to move the necessary pages back into the rAM. During this process, Redis is blockd until the OS finishes its job
+- Recommended: swappiness=0 when data always fits into RAM, 1 when you are not sure
+- To disable swap usage, execute as the root user sysctl -w vm.swappiness=0
+- To make the previous change permanent across reboots, change the file /etc/sysctl.conf as the root user to include the following vm.swappiness=0
