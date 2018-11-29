@@ -78,3 +78,13 @@ d. Remote code execution, similar to what the SaltStack took supports
 - Recommended: swappiness=0 when data always fits into RAM, 1 when you are not sure
 - To disable swap usage, execute as the root user sysctl -w vm.swappiness=0
 - To make the previous change permanent across reboots, change the file /etc/sysctl.conf as the root user to include the following vm.swappiness=0
+
+5. Not planning and configuring the memory properly
+- During RDB snapshot creation and AOF rewriting, redis-server needs to duplicate itself ( it executes the fork() system call)
+- If the Redis instance is very busy during the fork() call, it is possible that the copy-on-write strategy and overcommitting the memory is not enough
+- In this case, the child process may need the same amount of memory - or an amount very close to it as the parent
+- Assuming that Linux is the operating system, set the overcommit memory configuration to 1 to boost background saves
+- Add "vm.overcommit_memory=1" to /etc/sysctl.conf
+- THere is a configuration directive called maxmemory that limits the amount of memory that Redis is allowed to use (in bytes)
+- Change this configuration to the approximate value based on the available memory and application requirements
+- Redis should not use more than 50 percent of the available memory when any backup strategy is enabled. Make sure that you set up alarms for Redis memory usage
