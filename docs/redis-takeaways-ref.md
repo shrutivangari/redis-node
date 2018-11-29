@@ -88,3 +88,16 @@ d. Remote code execution, similar to what the SaltStack took supports
 - THere is a configuration directive called maxmemory that limits the amount of memory that Redis is allowed to use (in bytes)
 - Change this configuration to the approximate value based on the available memory and application requirements
 - Redis should not use more than 50 percent of the available memory when any backup strategy is enabled. Make sure that you set up alarms for Redis memory usage
+
+6. An approximate persistence strategy
+- A reason for application's code to make redis slow -> periodic backup strategy
+- When Redis starts the procedure to create an RDB snapshot or rewrite the AOF file, it creates a child process (using the fork() system call) and the new process handles the procedure
+- During the fork() execution, the process is blocked and Redis will stop serving clients. This is when the perceived latency by clients increases
+- To solve this
+- * Disable the transparent huge pages Linux kernel feature echo never > /sys/kernel/mm/transparent_hugepage/enabled
+- * Use an HVM instance
+- * Use a persistence-only slave server, in which the slave does nothing but cause the replicated data to persist
+- * Make backups less frequent, if possible, and then check whether the problem is mitigated
+- * Disable automatic persistence in Redis. Make the data persist manually when Redis is not under heavy load (with a cron job or something similar)
+- * Disable persistence if the data can be recreated easily and quickly
+ 
