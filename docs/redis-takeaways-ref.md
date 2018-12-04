@@ -94,10 +94,21 @@ d. Remote code execution, similar to what the SaltStack took supports
 - When Redis starts the procedure to create an RDB snapshot or rewrite the AOF file, it creates a child process (using the fork() system call) and the new process handles the procedure
 - During the fork() execution, the process is blocked and Redis will stop serving clients. This is when the perceived latency by clients increases
 - To solve this
-- * Disable the transparent huge pages Linux kernel feature echo never > /sys/kernel/mm/transparent_hugepage/enabled
-- * Use an HVM instance
-- * Use a persistence-only slave server, in which the slave does nothing but cause the replicated data to persist
-- * Make backups less frequent, if possible, and then check whether the problem is mitigated
-- * Disable automatic persistence in Redis. Make the data persist manually when Redis is not under heavy load (with a cron job or something similar)
-- * Disable persistence if the data can be recreated easily and quickly
+  * Disable the transparent huge pages Linux kernel feature echo never > /sys/kernel/mm/transparent_hugepage/enabled
+  * Use an HVM instance
+  * Use a persistence-only slave server, in which the slave does nothing but cause the replicated data to persist
+  * Make backups less frequent, if possible, and then check whether the problem is mitigated
+  * Disable automatic persistence in Redis. Make the data persist manually when Redis is not under heavy load (with a cron job or something similar)
+  * Disable persistence if the data can be recreated easily and quickly
  
+## Redis security
+- Redis does not implement Access Control List (ACL
+- AUTH authenticates a Redis client, it checks in the redis.conf file
+- Need to disable FLUSHALL, CONFIG, KEYS, DEBUG and SAVE In prod
+- Redis can be made secure by
+  * Use firewall rules to block access from unknown clients
+  * Run Redis on the loopback interface, rather than a publicaly accessible network interface
+  * Run Redis in a virtual private cloud instead of the public internet
+  * Encrypt client-to-server communication
+
+
