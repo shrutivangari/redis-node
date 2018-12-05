@@ -110,5 +110,11 @@ d. Remote code execution, similar to what the SaltStack took supports
   * Run Redis on the loopback interface, rather than a publicaly accessible network interface
   * Run Redis in a virtual private cloud instead of the public internet
   * Encrypt client-to-server communication
-- 
+- Encrypting client-to-server
+    Encrypting the Redis communication using SSL can prevent malicious attackers from eavesdropping on the networking and ensure that only trusted clients that have the SSL key can connect to Redis
+    The tool we use to encrypt Redis communication is called stunnel
+    It is an SSL encryption wrapper between a local client and a local or remove server
+    Many services that do not implement SSL encryption can take advantage of stunnel
+    A connection will exist between a stunnel server and a client, and that connection will be SSL-encrypted through a private SSL key
+    
 

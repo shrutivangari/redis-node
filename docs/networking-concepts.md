@@ -13,6 +13,8 @@
         * Optional layer of security for your VPC that acts as a firewall for controlling traffic in and out of one or more subnets
         * You might set up network ACLs with rules similar to your security groups in order to add an additional layer of security to your VPC
 * VPC
+- VPC is a pool of on-demand resources that run on a public cloud. The resources are virtually isolated from different users of the same public cloud
+- All machines can reach each other in a public cloud if no restrictive firewall rules are defined but in a VPC, only machines on the same VPC can reach each other 
 * Encryption
 * Classless Inter-Domain Routing (CIDR)
     * Method for allocating IP addresses and IP routing
@@ -23,4 +25,14 @@
   * Most of the explanation of iptables is not applicable for Windows or Mac OS
   * However because Redis will be running on a Linux server most of the time, it is important to understand how iptables can be used to improve the security around Redis
   * The iptables program should be executed by the root user
-  * iptables 
+  * iptables defines the rules to govern the network traffic
+  * The iptables program performs packet filtering with network rules
+  * Different tables have multiple chains, and a chain is a group of rules that a packet is checked against sequentially
+  * When a packet matches one of the existing rules in iptables, it will execute the associated action. The default table is the "filter" table
+  * There are three built in chains for the filter table:
+    - INPUT: This chain handles all packets that are addressed to your server
+    - OUTPUT: This chain contains the rules for the traffic created by your server
+    - FORWARD: This chain allows you to configure your server to route requests to other machines
+  * Successor to iptables is nftables
+  
+  
