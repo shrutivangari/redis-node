@@ -110,5 +110,5 @@ d. Remote code execution, similar to what the SaltStack took supports
   * Run Redis on the loopback interface, rather than a publicaly accessible network interface
   * Run Redis in a virtual private cloud instead of the public internet
   * Encrypt client-to-server communication
-
+- 
 
