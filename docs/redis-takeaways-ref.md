@@ -117,4 +117,19 @@ d. Remote code execution, similar to what the SaltStack took supports
     Many services that do not implement SSL encryption can take advantage of stunnel
     A connection will exist between a stunnel server and a client, and that connection will be SSL-encrypted through a private SSL key
     
-
+## Scaling Redis
+### Persistence
+- Redis Database (RDB)
+Is a binary that has a point in time representing the data stored in a Redis instance
+It is optimized for fast reads and writes
+The internal representation of a .rdb file on a disk is very similar to Redis's in-memory representation
+It can use LZF compression to make an RDB file very compact
+LZF compression is a fast compression algorithm that has a very small memory requirement during compression. Although it does not have the best compression rates compared to other compression algorithms, it works efficiently with Redis
+A single RDB file is sufficient to restore a Redis instance completely
+RDB is great for backups and disaster recovery because it allows you to save an RDB file every hour, day, week or month depending on your needs
+The command SAVE creates an RDB immediately but should be avoided because it blocks the Redis server during snapshot creation
+The command BGSAVE (background save) should be used instead, it has the same effect as SAVE but it runs in a child process so as not to block Redis
+In order to avoid performance degradation during a background save, the redis-server processes creates a child process (fork) to perform all the persistence operations. So, the main process will never perform any disk I/O operations.
+It is not recommended to use save directives less than 30 seconds apart from each other
+RDB is not a 100% guaranteed data recovery approach, even if you save snapshots every minute and with at least 100 changes
+- Append-only File (AOF)
