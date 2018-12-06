@@ -261,3 +261,11 @@ Stops all clients causes data to persist if enabled, and shuts down the Redis se
   - NOSAVE - Prevents Redis from persisting data to the disk, even if persistence is enabled
 * OBJECT ENCODING
 Returns the encoding used by a given key
+
+## Persistence
+* SAVE
+Creates an RDB immediately but should be avoided because it blocks the Redis server during snapshot creation
+* BGSAVE (background save) 
+Should be used instead, it has the same effect as SAVE but it runs in a child process so as not to block Redis
+* stop-writes-on-bgsave-error
+Yes/No. Makes Redis stop accepting writes if the last background save has failed. Redis starts accepting writes again after a background save succeeds. Default - yes
