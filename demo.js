@@ -9,6 +9,7 @@ var hyperloglog=require("./concepts/hyperloglog");
 var transaction=require("./concepts/transaction-bank");
 var transactionW=require("./concepts/transaction-watch");
 var lua=require("./concepts/lua");
+var parition=require("./concepts/partitioning");
 /**
  * Run the voting system to demonstrate incr-decr
  */
