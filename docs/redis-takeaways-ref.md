@@ -155,3 +155,18 @@ Does not work well in disaster scenarios. Get significatntly more instances to m
 Route keys that would affect a small portion of data when the hash table was resized
 Is a kind of hashing that remaps only a small portion of the data to different servers when the list of Redis servers is changed (ionly K/n keys are remapped, where K is the number of keys and n is the number of servers)
 Technique consists of creating multiple points in a circle for each Redis key and server. The appropriate server for a given key is the closest server to that key in the circle (clockwise); this circle is also referred to as ring. The points are created using a hash function - MD5
+- Tagging
+Technique of ensuring that keys are stored on the same server
+Choose a convention for the key names and add a prefix/suffix. Decide how to route that key based on the adding prefix or suffix.
+The convention in the Redis community is to add a tag to a key name with the tag name inside curly braces key_name:{tag}
+
+Implementation of Redis partitioning
+Can be implemented in different layers - client, proxy or query router
+- Client layer = application layer
+- Proxy layer = extra layer that proxies all Redis queries and performs partitioning for applications
+When a proxy is used, the client layer does not even need to know that partitioning is taking place
+example - twemproxy
+- Query router layer = invisible to the application
+Not an external program, it is the data store itself
+Any command issued to any Redis instance will succeed with this layer, because the Redis instance itself will make sure that the command is routed to the appropriate instance in its cluster. Redis cluster behaves like a query router
+
