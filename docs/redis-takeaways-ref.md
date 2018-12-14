@@ -133,3 +133,25 @@ In order to avoid performance degradation during a background save, the redis-se
 It is not recommended to use save directives less than 30 seconds apart from each other
 RDB is not a 100% guaranteed data recovery approach, even if you save snapshots every minute and with at least 100 changes
 - Append-only File (AOF)
+
+### Partitioning
+- Range Partitioning
+Data is distributed based on a range of keys
+Disadv - Distributions will probably be uneven - one range may be much larger than others
+Disadv2 - This does not accommodate changing the list of Redis hosts easily because if the number of Redis instances changes, the range distribution needs to change accordingly. It is likely that adding or removing a host will invalidate a good portion of data
+- Hash Partitioning
+Consists of finding the instance to send the commands by applying a hash function to the Redis key, dividing this hash value by the number of Redis instances available and using the remainder of that division as the instance index
+Very common to use MD5 and SHA1 as hash functions
+Recommended to have a prime number as the total number of Redis instances with this partitioning method in order to avoid collisions. If the total number of Redis instances is not a prime number, collisions are more likely to occur
+This partitioning method can result in cache misses if the number of instances is changed. If the instance list stays the same forever, this problem does not occur which is unlikely to happen because resource failure should be expected
+In a small test using hash partitioning, 75 percent of our dataset was invalidated by adding two or more servers to the list
+- Presharding
+Pre-partitioning the data to a high extent so that the host list size never changes
+The idea is to create more Redis instances, reuse the existing servers, and launch more instances on different ports
+This works well because Redis is single threaded and does not use all the resources available in the machine so we can launch many Redis instances per server and still be fine
+This method works because if you need to add more capacity to the cluster, you can replace some Redis instances with more powerful ones, and the client array size never changes.
+Does not work well in disaster scenarios. Get significatntly more instances to manage and monitor and there is no great set of tools for doing this
+- Consistent Hashing/Hash ring
+Route keys that would affect a small portion of data when the hash table was resized
+Is a kind of hashing that remaps only a small portion of the data to different servers when the list of Redis servers is changed (ionly K/n keys are remapped, where K is the number of keys and n is the number of servers)
+Technique consists of creating multiple points in a circle for each Redis key and server. The appropriate server for a given key is the closest server to that key in the circle (clockwise); this circle is also referred to as ring. The points are created using a hash function - MD5
