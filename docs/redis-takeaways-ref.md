@@ -165,8 +165,52 @@ Can be implemented in different layers - client, proxy or query router
 - Client layer = application layer
 - Proxy layer = extra layer that proxies all Redis queries and performs partitioning for applications
 When a proxy is used, the client layer does not even need to know that partitioning is taking place
-example - twemproxy
+example - twemproxy/nutcracker
+It is a fast and lightweight proxy for Redis that implements sharding with support for multiple hashing modes
+Enables pipelining of requests and responses maintains persistent server connections to shard your data automatically across multiple servers
+Works on Linux, *BSD, Smart OS(Solaris)
+Help us scale Redis horizontally
+Used in prod by companies - interest, Tumblr, Twitter, Vine, Wikimedia, Digg, Snapchat
 - Query router layer = invisible to the application
 Not an external program, it is the data store itself
 Any command issued to any Redis instance will succeed with this layer, because the Redis instance itself will make sure that the command is routed to the appropriate instance in its cluster. Redis cluster behaves like a query router
 
+## Redis cluster and Redis Sentinel
+
+### Topology works for scenarios
+- The master has enough memory to store all of the data that you need
+- More slaves can be added to scale reads better or when network bandwidth is a problem (the total read volume is higher than the hardware capability)
+- It is acceptable to stop your application when maintenance is required on the master machine 
+- Data redundancy through slaves is enough
+
+### Topology refresh does not work well in scenarios
+- The dataset is bigger than the available memory in the master Redis instance
+- A given application cannot be stopped when there are issues with the master instance
+- You need to distribute data among multiple nodes
+- A single point of failure is not acceptable
+
+### The CAP Theorem
+- Consistency: A read operation is guaranteed to return the most recent write
+- Availability: Any operation is guaranteed to receive a response saying whether it has succeeded or failed
+- Partition Tolerance: The system continues to operate when a network partition occurs
+
+### Redis sentinel and CAP Theorem
+- Network partitions are unavoidable in a distributed system, so it should ensure either consistency or availability i.e. it should be either CP Or AP
+- Redis Sentinel and Redis cluster are neither consistent nor available under network partitions
+- However, there are some configurations that can minimize the consistency and availability problems
+- They cannot provide availability because there is a quorum that needs to agree on a master election, and depending on the quorum's decision, part of the system may be unavailable
+- They cannot provide consistency under network partitions, for example, when two or more partitions accept writes at the same time. When the network heals and the partitions are joined, some of those writes will be lost (conflicts are not automatically solved, nor are they exposed for clients).
+
+### Redis Sentinel
+- When a master node dies, slave gets promoted to master using sentinel
+- Sentinel is a distributed system designed to automatically promote a Redis slave to master if the existing master fails
+- Does not distribute data across nodes since the master node has all of the data and the slaves have a copy of the data
+- Sentinel is not a distributed data store
+
+### Redis cluster
+- Designed to automatically shard data across different Redis instances, providing some degree of availability during network partitions
+- It is not strongly consistent under chaotic scenarios
+- Only requires a single process to run
+- There are two ports that Redis uses
+- First one is used to serve clients (low port) and the second serves as a bus for node-to-node communication (high port)
+- High port is used to exchange messages such as failure detection, failover, resharding and so on
