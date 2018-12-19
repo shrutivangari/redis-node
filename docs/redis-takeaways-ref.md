@@ -214,3 +214,28 @@ Any command issued to any Redis instance will succeed with this layer, because t
 - There are two ports that Redis uses
 - First one is used to serve clients (low port) and the second serves as a bus for node-to-node communication (high port)
 - High port is used to exchange messages such as failure detection, failover, resharding and so on
+- The Redis cluster bus uses a binary protocol to exchange messages between nodes
+- The low port is specified in the configuration, and Redis assigns the high port by adding 10,000 to the low port
+- If a Redis server starts listening to port 6379 (low port) in cluster mode, it will internally assign port 16379 (high port) for node-to-node communication
+- The Redis Cluster topology is a full mesh network. All nodes are interconnected through Transmission Control Protocol (TCP) connections
+- Unlike Redis Sentinel, when a failover is happening in Redis Cluster, only the keys in the slots assigned to the failed master are unavailable until a replica is promoted
+- The data may be unavailable during a failover, because slave promotion is not instantaneous
+- When connected through the redis-cli, the -c parameter is required to enable cluster mode
+
+### Hash slots
+- Value of hash = 16,384. This is called a hash slot
+- Each master in a cluster owns a portion of the 16,384 slots
+- The hash slot is found by using the CRC-16 hash function to convert the key to an integer and then calculating modulo 16,384 of that integer
+HASH_SLOT = CRC16(key) mod 16384
+
+### HASH TAGS
+- Any multi-key operations require all keys to be stored in the same node, and hash tags are the only way to ensure this in a Redis cluster
+- A hashtag is used to apply the hash function and ensure that different key names end up in the same hash slot
+
+### CONFIGURATION
+cluster-enabled yes
+cluster-config-file cluster.conf
+cluster-node-timeout 2000
+cluster-slave-validity-factor 10
+cluster-migration-barrier 1
+cluster-require-full-coverage yes
