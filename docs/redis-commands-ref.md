@@ -269,3 +269,35 @@ Creates an RDB immediately but should be avoided because it blocks the Redis ser
 Should be used instead, it has the same effect as SAVE but it runs in a child process so as not to block Redis
 * stop-writes-on-bgsave-error
 Yes/No. Makes Redis stop accepting writes if the last background save has failed. Redis starts accepting writes again after a background save succeeds. Default - yes
+
+## Redis Cluster
+* CLUSTER INFO
+Tells us that the cluster only knows about one node - the connected node, no slots are assigned to any of the nodes and the cluster state is fail
+* CLUSTER ADDSLOTS
+Informs the node what slots it should own. If a hash slot is already assigned, this command fails. It is possible to assign slots one by one; it does not need to be a sequence of numbers
+* CLUSTER SET-CONFIG-EPOCH
+Manually set an incremental epoch to each node
+* CLUSTER MEET
+Notify it about the existence of all the other node. When the first node meets the second, it means that the second node also knows about the first, and they can exchange information about other nodes that they know
+* CLUSTER REPLICATE
+Replicate a given node
+* CLUSTER SETSLOT
+Reshard the hash slots and move the existing keys
+* CLUSTER SETSLOT <hash-slot> IMPORTING <source-id>:
+This subcommand changes the hash slot state to importing. It must be executed at the node that is going to receive the hash slot, and the node ID of the current slot owner must be passed in.
+* CLUSTER SETSLOT <hash-slot> MIGRATING <destination-id>:
+This subcommand changes the hash slot state to migrating. It is the opposite of the IMPORTING subcommand. It must be executed at the node that owns the hash slot, and the node ID of the new slot owner must be passed in.
+* CLUSTER SETSLOT <hash-slot> NODE <owner-id>:
+This subcommand associates a hash slot with a node. It must be executed on the source and destination nodes. Executing it on all master nodes is also recommended to avoid wrong redirects while the propagation is taking place.
+When this command is executed on the destination node, the importing state is cleared and then the configuration epoch is updated.
+When it is executed on the source node, the migrating state is cleared as long as no keys exist in that slot. Otherwise, an error is thrown.
+* CLUSTER SETSLOT <hash-slot> STABLE:
+This subcommand clears any state of a hash slot (importing or migrating). It is useful when a rollback in a resharding operation is needed.
+* CLUSTER COUNTKEYSINSLOT <slot> 
+returns the number of keys in a given slot.
+* CLUSTER GETKEYSINSLOT <slot><amount> 
+returns an array with key names that belong to a slot based on the amount specified.
+* MIGRATE <host> <port> <key> <db> <timeout> 
+moves a key to a different Redis instance.
+* CLUSTER FORGET <node-id>
+Remove a node from the cluster after all of its hash slots are redistributed
