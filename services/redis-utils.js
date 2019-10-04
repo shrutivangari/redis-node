@@ -5,10 +5,10 @@ var logger = require("log4js").getLogger();
  * Create a Redis client
  */
 function createClient(options) {
-  var client = redis.createClient(options);
-  setDataInRedis(client, "my_key", "Hello world using Node.js and Redis");
-  getDataFromRedis(client, "my_key");
-  return client;
+    var client = redis.createClient(options);
+    setDataInRedis(client, "my_key", "Hello world using Node.js and Redis");
+    getDataFromRedis(client, "my_key");
+    return client;
 }
 
 /**
@@ -17,14 +17,14 @@ function createClient(options) {
  * @param key - Query redis for a key
  */
 function getDataFromRedis(client, key) {
-  client.get(key, function(err, reply) {
-    if(err) {
-      logger.error(err);
-    } else {
-      redis.print;
-      logger.info(reply);
-    }
-  });
+    client.get(key, function (err, reply) {
+        if (err) {
+            logger.error(err);
+        } else {
+            redis.print;
+            logger.info(reply);
+        }
+    });
 }
 
 /**
@@ -34,10 +34,10 @@ function getDataFromRedis(client, key) {
  * @param value - set value for a key
  */
 function setDataInRedis(client, key, value) {
-  client.set(key,value);
+    client.set(key, value);
 }
 
 module.exports = {
-  createClient: createClient,
-  getDataFromRedis: getDataFromRedis
+    createClient: createClient,
+    getDataFromRedis: getDataFromRedis
 }

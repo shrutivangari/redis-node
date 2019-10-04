@@ -3,25 +3,25 @@ function markDealAsSent(dealId, userId, client) {
 }
 
 function sendDealIfNotSent(dealId, userId, client) {
-    client.SISMEMBER(dealId, userId, function(err, reply) {
-        if(reply) {
+    client.SISMEMBER(dealId, userId, function (err, reply) {
+        if (reply) {
             console.log("Deal", dealId, "was already sent to the user", userId);
         } else {
             console.log("Sending", dealId, "to user", userId);
-            markDealAsSent(dealId,userId,client);
+            markDealAsSent(dealId, userId, client);
         }
     });
 }
 
 function showUsersThatReceivedAllDeals(dealIds, client) {
-    client.SINTER(dealIds, function(err, reply) {
-        console.log(reply+ " received all of the deals: " + dealIds);
+    client.SINTER(dealIds, function (err, reply) {
+        console.log(reply + " received all of the deals: " + dealIds);
     });
 }
 
 function showUsersThatReceivedAtLeastOneOfTheDeals(dealIds, client) {
-    client.SUNION(dealIds, function(err, reply) {
-        console.log(reply+ " received at least one of the deals: " + dealIds);
+    client.SUNION(dealIds, function (err, reply) {
+        console.log(reply + " received at least one of the deals: " + dealIds);
     });
 }
 

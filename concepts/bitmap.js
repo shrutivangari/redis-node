@@ -1,9 +1,9 @@
-var logger=require("log4js").getLogger();
+var logger = require("log4js").getLogger();
 
 function storeDailyVisit(date, userId, client) {
     var key = 'visits:daily:' + date;
-    client.SETBIT(key, userId, 1, function(err, reply) {
-        if(err) {
+    client.SETBIT(key, userId, 1, function (err, reply) {
+        if (err) {
             logger.error(err);
         }
         logger.info(reply);
@@ -12,9 +12,9 @@ function storeDailyVisit(date, userId, client) {
 }
 
 function countVisits(date, client) {
-    var key='visits:daily:'+date;
+    var key = 'visits:daily:' + date;
     client.BITCOUNT(key, function (err, reply) {
-        if(err) {
+        if (err) {
             logger.error(err);
         }
         logger.log(date, "had", reply, "visits.");
@@ -22,15 +22,15 @@ function countVisits(date, client) {
 }
 
 function showUserIdsFromVisit(date, client) {
-    var key='visits:daily:'+date;
-    client.GET(key, function(err, bitmapValue) {
-        var userIds=[];
+    var key = 'visits:daily:' + date;
+    client.GET(key, function (err, bitmapValue) {
+        var userIds = [];
         var data = bitmapValue.toJSON().data;
 
-        data.forEach(function(byte, byteIndex) {
-            for(var bitIndex=7; bitIndex>=0; bitIndex --) {
-                var visited = byte >> bitIndex &1;
-                if(visited === 1) {
+        data.forEach(function (byte, byteIndex) {
+            for (var bitIndex = 7; bitIndex >= 0; bitIndex--) {
+                var visited = byte >> bitIndex & 1;
+                if (visited === 1) {
                     var userId = byteIndex * 8 + (7 - bitIndex);
                     userIds.push(userId);
                 }

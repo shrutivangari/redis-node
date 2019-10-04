@@ -1,15 +1,16 @@
-var dataPrep=require("./services/data-prep.js");
-var voting=require("./concepts/incr-decr");
-var queue=require("./concepts/queue");
-var hash=require("./concepts/hash");
-var sets=require("./concepts/sets");
-var sortedSets=require("./concepts/sortedsets");
-var bitmaps=require("./concepts/bitmap");
-var hyperloglog=require("./concepts/hyperloglog");
-var transaction=require("./concepts/transaction-bank");
-var transactionW=require("./concepts/transaction-watch");
-var lua=require("./concepts/lua");
-var parition=require("./concepts/partitioning");
+var dataPrep = require("./services/data-prep.js");
+var voting = require("./concepts/incr-decr");
+var queue = require("./concepts/queue");
+var hash = require("./concepts/hash");
+var sets = require("./concepts/sets");
+var sortedSets = require("./concepts/sortedsets");
+var bitmaps = require("./concepts/bitmap");
+var hyperloglog = require("./concepts/hyperloglog");
+var transaction = require("./concepts/transaction-bank");
+var transactionW = require("./concepts/transaction-watch");
+var lua = require("./concepts/lua");
+var parition = require("./concepts/partitioning");
+
 /**
  * Run the voting system to demonstrate incr-decr
  */
@@ -26,7 +27,7 @@ function votingSystemIncrementDecrement(client) {
 
     voting.showResults(12345, client);
     voting.showResults(10001, client);
-    voting.showResults(60056, client)                                                                                    ;
+    voting.showResults(60056, client);
 }
 
 /**
@@ -34,22 +35,22 @@ function votingSystemIncrementDecrement(client) {
  */
 function producerWorker(client) {
     var logsQueue = new queue.Queue("logs", client);
-    var MAX=5;
-    for(var i=0;i<MAX;i++) {
-        logsQueue.push("Hello World #"+i);
+    var MAX = 5;
+    for (var i = 0; i < MAX; i++) {
+        logsQueue.push("Hello World #" + i);
     }
     console.log("Created " + MAX + " logs");
 }
 
 function consumerWorker(client) {
     var logsQueue = new queue.Queue("logs", client);
-    var MAX=5;
-    for(var i=0;i<MAX;i++) {
-        logsQueue.pop(function(err, replies) {
-            if(err) {
+    var MAX = 5;
+    for (var i = 0; i < MAX; i++) {
+        logsQueue.pop(function (err, replies) {
+            if (err) {
                 console.log(err);
             }
-            console.log("[consumer] Got log: "+ replies);
+            console.log("[consumer] Got log: " + replies);
         });
     }
 
@@ -67,16 +68,16 @@ function displayHash(client) {
 }
 
 function setsAndDeals(client) {
-    sets.markDealAsSent('deal:1','user:1',client);
-    sets.markDealAsSent('deal:1','user:2',client);
-    sets.markDealAsSent('deal:2','user:1',client);
-    sets.markDealAsSent('deal:2','user:3',client);
-    sets.sendDealIfNotSent('deal:1', 'user:1',client);
-    sets.sendDealIfNotSent('deal:1', 'user:2',client);
-    sets.sendDealIfNotSent('deal:1', 'user:3',client);
+    sets.markDealAsSent('deal:1', 'user:1', client);
+    sets.markDealAsSent('deal:1', 'user:2', client);
+    sets.markDealAsSent('deal:2', 'user:1', client);
+    sets.markDealAsSent('deal:2', 'user:3', client);
+    sets.sendDealIfNotSent('deal:1', 'user:1', client);
+    sets.sendDealIfNotSent('deal:1', 'user:2', client);
+    sets.sendDealIfNotSent('deal:1', 'user:3', client);
 
-    sets.showUsersThatReceivedAllDeals(["deal:1", "deal:2"],client);
-    sets.showUsersThatReceivedAtLeastOneOfTheDeals(["deal:1", "deal:2"],client);
+    sets.showUsersThatReceivedAllDeals(["deal:1", "deal:2"], client);
+    sets.showUsersThatReceivedAtLeastOneOfTheDeals(["deal:1", "deal:2"], client);
 
 }
 
@@ -96,9 +97,9 @@ function leaderboard(client) {
 
     leaderBoard.showTopUsers(3);
 
-    leaderBoard.getUsersAroundUser("Felipe", 5, function(users) {
+    leaderBoard.getUsersAroundUser("Felipe", 5, function (users) {
         console.log("\nUsers around Felipe:");
-        users.forEach(function(user) {
+        users.forEach(function (user) {
             console.log("#" + user.rank, "User:", user.username + ", score:", user.score);
         });
 //      client.quit();
@@ -175,7 +176,7 @@ function timeSeriesSortedSet(client, dataType) {
     var concurrentPlays = new timeseries.TimeSeries(client, "concurrentplays");
     var beginTimestamp = 0;
 
-    concurrentPlays.insert(client,beginTimestamp, "user:max");
+    concurrentPlays.insert(client, beginTimestamp, "user:max");
     concurrentPlays.insert(client, beginTimestamp, "user:max");
     concurrentPlays.insert(client, beginTimestamp + 1, "user:hugo");
     concurrentPlays.insert(client, beginTimestamp + 1, "user:renata");
@@ -187,13 +188,13 @@ function timeSeriesSortedSet(client, dataType) {
 }
 
 function transactionBank(client) {
-    client.MSET("max:checkings", 100, "hugo:checkings", 100, function(err, reply) {
+    client.MSET("max:checkings", 100, "hugo:checkings", 100, function (err, reply) {
         console.log("Max checkings: 100");
         console.log("Huge checkings: 100");
         // console.log("Getting values, " + console.log(client.get("max:checkings")));
         // console.log(client.mget("max:checkings","hugo:checkings"));
-        transaction.transfer(client, "max:checkings", "hugo:checkings", 40, function(err, balance) {
-            if(err) {
+        transaction.transfer(client, "max:checkings", "hugo:checkings", 40, function (err, balance) {
+            if (err) {
                 console.log("err", err);
             } else {
                 console.log("Transferred 40 from Max to Hugo");
@@ -204,7 +205,7 @@ function transactionBank(client) {
 }
 
 function transactionWatch(client) {
-    transactionW.zpop(client, "presidents", function(member) {
+    transactionW.zpop(client, "presidents", function (member) {
         console.log("The first president in the group is:", member);
     });
 }

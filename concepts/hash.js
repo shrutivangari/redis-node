@@ -11,7 +11,7 @@ function downVote(id, client) {
 }
 
 function showDetails(id, client) {
-    client.HGETALL("link:" + id, function(err, replies) {
+    client.HGETALL("link:" + id, function (err, replies) {
         console.log("title:", replies['title']);
         console.log("author:", replies['author']);
         console.log("link:", replies['link']);
@@ -20,7 +20,7 @@ function showDetails(id, client) {
     });
 }
 
-module.exports= {
+module.exports = {
     saveLink: saveLink,
     upVote: upVote,
     downVote: downVote,

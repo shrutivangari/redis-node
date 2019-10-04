@@ -1,4 +1,4 @@
-var logger=require("log4js").getLogger();
+var logger = require("log4js").getLogger();
 
 /**
  * Increment data
@@ -6,8 +6,8 @@ var logger=require("log4js").getLogger();
  * @param client - Redis client
  */
 function upVote(id, client) {
-  var key = "article:" + id + ":votes";
-  client.INCR(key);
+    var key = "article:" + id + ":votes";
+    client.INCR(key);
 }
 
 /**
@@ -16,8 +16,8 @@ function upVote(id, client) {
  * @param client - Redis client
  */
 function downVote(id, client) {
-  var key = "article:" + id + ":votes";
-  client.DECR(key);
+    var key = "article:" + id + ":votes";
+    client.DECR(key);
 }
 
 /**
@@ -26,19 +26,19 @@ function downVote(id, client) {
  * @param client - Redis client
  */
 function showResults(id, client) {
-  var headlineKey = "article:" + id + ":headline";
-  var voteKey = "article: " + id + ":votes";
-  client.MGET([headlineKey, voteKey], function(err, replies) {
-    if(err) {
-      logger.error("Something went wrong", err);
-    } else {
-      logger.info('The article "' + replies[0] + '" has', replies[1], 'votes');
-    }
-  });
+    var headlineKey = "article:" + id + ":headline";
+    var voteKey = "article: " + id + ":votes";
+    client.MGET([headlineKey, voteKey], function (err, replies) {
+        if (err) {
+            logger.error("Something went wrong", err);
+        } else {
+            logger.info('The article "' + replies[0] + '" has', replies[1], 'votes');
+        }
+    });
 }
 
 module.exports = {
-  upVote: upVote,
-  downVote: downVote,
-  showResults: showResults
+    upVote: upVote,
+    downVote: downVote,
+    showResults: showResults
 }

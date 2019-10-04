@@ -1,8 +1,8 @@
 var logger = require("log4js").getLogger();
 var demo = require("./demo");
-var utils=require("./services/redis-utils.js");
+var utils = require("./services/redis-utils.js");
 
-logger.level='info';
+logger.level = 'info';
 
 /**
  * Demo incr, dec, queue, hash, sets

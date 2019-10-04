@@ -3,12 +3,12 @@ var client = redis.createClient();
 client.quit();
 
 function zpop(key, callback) {
-    client.watch(key, function(watchErr, watchReply) {
-        client.zrange(key, 0, 0, function(zrangeErr, zrangeReply) {
+    client.watch(key, function (watchErr, watchReply) {
+        client.zrange(key, 0, 0, function (zrangeErr, zrangeReply) {
             var multi = client.multi();
             multi.ZREM(key, zrangeReply);
-            multi.EXEC(function(transactionErr, transactionReply) {
-                if(transactionReply) {
+            multi.EXEC(function (transactionErr, transactionReply) {
+                if (transactionReply) {
                     callback(zrangeReply);
                 } else {
                     zpop(key, callback);
