@@ -1,3 +1,5 @@
+Examples and practice from the book Redis Essentials
+
 # How to run this code
 
 install npm
